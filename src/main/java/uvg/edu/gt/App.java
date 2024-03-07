@@ -29,6 +29,7 @@ public class App
         leo.llenarMap(direccion,maso);
         MapFab<String,Integer> fab1 = new MapFab<String,Integer>();
         Map<String,Integer> coleccion = fab1.getMap(opc);
+        Map<String,String> coleccion0 = fab.getMap(opc);
 
         int opcion;
         do {
@@ -50,7 +51,7 @@ public class App
                 case 1:
                     System.out.print("Ingrese el nombre de la carta que desea agregar: ");
                     String nombreCarta = in.nextLine();
-                    agregarCarta(maso,coleccion, nombreCarta);
+                    agregarCarta(maso,coleccion, coleccion0, nombreCarta);
                     break;
                 case 2:
                     System.out.print("Ingrese el nombre de la carta que desea consultar: ");
@@ -61,7 +62,7 @@ public class App
                     mostrarColeccion(coleccion, maso);
                     break;
                 case 4:
-                    mostrarColeccionOrdenadaPorTipo(coleccion, maso);
+                    mostrarColeccionOrdenadaPorTipo(coleccion, coleccion0);
                     break;
                 case 5:
                     mostrarTodasCartas(maso);
@@ -83,13 +84,14 @@ public class App
 
 
     }
-    public static void agregarCarta(Map<String,String> maso,Map<String, Integer> coleccion, String nombreCarta) {
+    public static void agregarCarta(Map<String,String> maso,Map<String, Integer> coleccion, Map<String,String> col, String nombreCarta) {
         if (coleccion.containsKey(nombreCarta)) {
             int cantidad = coleccion.get(nombreCarta);
             coleccion.put(nombreCarta, cantidad + 1);
             System.out.println("Se ha agregado una carta de " + nombreCarta + " a la colección.");
         }else if(maso.containsKey(nombreCarta)){
             coleccion.put(nombreCarta,1);
+            col.put(nombreCarta,maso.get(nombreCarta));
         }else {
             System.out.println("Error: La carta ingresada no se encuentra entre las cartas disponibles.");
         }
@@ -115,13 +117,13 @@ public class App
     }
 
     public static void mostrarColeccionOrdenadaPorTipo(Map<String, Integer> coleccion, Map<String, String> maso) {
-        List<Map.Entry<String, Integer>> listaOrdenada = new ArrayList<>(coleccion.entrySet());
+        List<Map.Entry<String, String>> listaOrdenada = new ArrayList<>(maso.entrySet());
         listaOrdenada.sort(Map.Entry.comparingByValue());
 
         System.out.println("Nombre - Tipo - Cantidad");
-        for (Map.Entry<String, Integer> entry : listaOrdenada) {
+        for (Map.Entry<String, String> entry : listaOrdenada) {
             String nombreCarta = entry.getKey();
-            int cantidad = entry.getValue();
+            int cantidad = coleccion.get(nombreCarta);
             String tipo = maso.get(nombreCarta);
             System.out.println(nombreCarta + " - " + tipo + " - " + cantidad);
         }
