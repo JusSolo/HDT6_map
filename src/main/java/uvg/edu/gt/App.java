@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
@@ -25,7 +21,7 @@ public class App
                 + "**************************************************\n");
         String opc = in.nextLine();
         Map<String,String> maso = fab.getMap(opc);
-        String direccion = "/home/juan/Descargas/cards_desc.txt";
+        String direccion = "C:\\Users\\cjvil\\IdeaProjects\\cards_desc.txt";
         leo.llenarMap(direccion,maso);
         MapFab<String,Integer> fab1 = new MapFab<String,Integer>();
         Map<String,Integer> coleccion = fab1.getMap(opc);
@@ -46,7 +42,6 @@ public class App
                     + "****************************************************************\n");
             System.out.print("Ingrese el número de la opción deseada: ");
             opcion = Integer.parseInt(getNumber(in));
-
             switch (opcion) {
                 case 1:
                     System.out.print("Ingrese el nombre de la carta que desea agregar: ");
@@ -77,8 +72,10 @@ public class App
                     System.out.println("Opción no válida. Por favor, ingrese un número válido.");
             }
         } while (opcion != 0);
-
         in.close();
+        System.out.println("Tiempo ejecucion HashMap:" + medirTiempoEjecucion("HashMap"));
+        System.out.println("Tiempo ejecucion TreeMap:" + medirTiempoEjecucion("TreeMap"));
+        System.out.println("Tiempo ejecucion LinkedHashMap:" + medirTiempoEjecucion("LinkedHashMap"));
 
 
 
@@ -165,4 +162,21 @@ public class App
 
         return number;
     }
+
+    public static long medirTiempoEjecucion(String opc){
+        Scanner in = new Scanner(System.in);
+        MapFab<String,String> fab = new MapFab<String,String>();
+        Leo leo = new Leo();
+        Map<String,String> maso = fab.getMap(opc);
+        String direccion = "C:\\Users\\cjvil\\IdeaProjects\\cards_desc.txt";
+        leo.llenarMap(direccion,maso);
+        MapFab<String,Integer> fab1 = new MapFab<String,Integer>();
+        Map<String,Integer> coleccion = fab1.getMap(opc);
+        Map<String,String> coleccion0 = fab.getMap(opc);
+        long tiempo = System.currentTimeMillis();
+        mostrarTodasCartas(maso);
+        tiempo = System.currentTimeMillis() - tiempo;
+        return tiempo;
+    }
+
 }
